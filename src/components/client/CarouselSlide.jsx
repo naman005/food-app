@@ -30,7 +30,7 @@ export default function CarouselSlide({
   useEffect(() => setSelectedOption({ name: "default", price: 0 }), [item.id]);
 
   return (
-    <div className="flex flex-col w-full h-full overflow-hidden">
+    <div className="relative flex flex-col w-full h-full overflow-hidden">
     <span
       className={`
         absolute inset-0 flex justify-center -top-10 z-30

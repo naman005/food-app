@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"; 
+import { motion } from "framer-motion";
 import CarouselSlide from "./CarouselSlide";
 import {
   Carousel,
@@ -18,6 +19,10 @@ export default function ItemCarousel({
   const [api, setApi] = useState(null);
   const [current, setCurrent] = useState(0);
 
+  const categoryItems = items.filter(
+    (item) => item.categoryId === selectedCategory.id
+  );
+
   useEffect(() => {
     if (!api) return;
 
@@ -28,11 +33,18 @@ export default function ItemCarousel({
     });
   }, [api]);
 
+  useEffect(() => {
+    if (!api) return;
+  
+    if (current >= categoryItems.length) {
+      api.scrollTo(0, true);
+      setCurrent(0);
+    }
+  }, [categoryItems.length, current, api]);
+  
+
   if (!selectedCategory) return null;
 
-  const categoryItems = items.filter(
-    (item) => item.categoryId === selectedCategory.id
-  );
 
   return (
     <div className="flex items-center justify-center bg-white">
@@ -49,21 +61,37 @@ export default function ItemCarousel({
                   key={index}
                   className="flex flex-col h-full w-full"
                 >
-                  <div className="w-full h-full">
+                  <motion.div
+                      className="w-full h-full"
+                      animate={{
+                        scale: index === current ? 1 : 0.965,
+                        opacity: index === current ? 1 : 0,
+                        y: index === current ? 0 : 8,
+                      }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 420,
+                        damping: 32,
+                        mass: 0.9,
+                      }}
+                      style={{
+                        pointerEvents: index === current ? "auto" : "none",
+                      }}
+                    >
                     <CarouselSlide
                       item={item}
                       options={itemOptions}
                       onAdd={onAddItem}
                       restaurantConfig={restaurantConfig}
                     />
-                  </div>
+                  </motion.div>
                 </CarouselItem>
               );
             })}
           </CarouselContent>
 
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="hidden sm:flex" />
+          <CarouselNext className="hidden sm:flex" />
         </Carousel>
 
         <CarouselIndicators
