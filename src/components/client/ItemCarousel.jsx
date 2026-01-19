@@ -18,33 +18,30 @@ export default function ItemCarousel({
 }) {
   const [api, setApi] = useState(null);
   const [current, setCurrent] = useState(0);
-
-  const categoryItems = items.filter(
-    (item) => item.categoryId === selectedCategory.id
-  );
+  const categoryItems = selectedCategory ? items.filter((item) => item.categoryId === selectedCategory.id) : [];
 
   useEffect(() => {
     if (!api) return;
 
     setCurrent(api.selectedScrollSnap());
 
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
+    const onSelect = () => setCurrent(api.selectedScrollSnap());
+    api.on("select", onSelect);
+
+    return () => api.off("select", onSelect); 
   }, [api]);
 
   useEffect(() => {
     if (!api) return;
-  
+    if (categoryItems.length === 0) return;
+
     if (current >= categoryItems.length) {
       api.scrollTo(0, true);
       setCurrent(0);
     }
-  }, [categoryItems.length, current, api]);
-  
+  }, [selectedCategory?.id, categoryItems.length, current, api]);
 
-  if (!selectedCategory) return null;
-
+  if (!selectedCategory) return null; 
 
   return (
     <div className="flex items-center justify-center bg-white">
