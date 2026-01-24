@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Alert, AlertTitle } from "@/components/ui/alert"
 import { Switch } from "@/components/ui/switch"
 import { Checkbox } from "@/components/ui/checkbox"
 
@@ -21,7 +20,7 @@ import {
   RadioGroupItem,
 } from "@/components/ui/radio-group"
 import { toast } from "sonner"
-import { X, AlertCircleIcon } from "lucide-react";
+import { X } from "lucide-react";
 import { saveRestaurantSetup } from "@/services/create/saveRestaurantSetup";
 import { uploadToCloudinary } from "@/utils/uploadToCloudinary";
 import { firebaseAuth } from "@/firebase/firebaseUtils";
@@ -34,7 +33,6 @@ export default function MenuSetupPage() {
   const { restaurantId } = useRestaurant(); 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); 
-  const [error, setError] = useState("");
   const [restaurantName, setRestaurantName] = useState("");
   const [categories, setCategories] = useState([
     {
@@ -209,7 +207,7 @@ export default function MenuSetupPage() {
 
     } catch (err) {
       console.error(err);
-      setError("Setup failed. Please try again.");
+      toast.error("Setup failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -218,14 +216,6 @@ export default function MenuSetupPage() {
   return (
     <div className="relative min-h-screen">
       <div className="max-w-5xl mx-auto p-6 space-y-8">
-      {error && 
-        <div className="w-full max-w-sm mt-5">
-          <Alert variant="destructive" className="mt-5">
-            <AlertCircleIcon />
-          <AlertTitle>{error}</AlertTitle>
-          </Alert>
-        </div>
-      }
       
       <h1 className="text-2xl font-bold">
         First Time Setup

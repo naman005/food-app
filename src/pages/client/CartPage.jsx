@@ -19,6 +19,7 @@ export default function CartPage({ cart, controls, restaurantId, restaurantConfi
   const taxName = restaurantConfig.tax.name;
 
   const confirmOrder = async () => {
+    if(cart.length === 0) return;
     setLoading(true);
     try {
       const totalAmount = showTaxCalc ? (total + (total * taxPercentage/100)) : total; 
@@ -98,7 +99,7 @@ export default function CartPage({ cart, controls, restaurantId, restaurantConfi
             <Button onClick={onClose} variant="outline" className="w-full">
               Continue Shopping
             </Button>
-            <Button onClick={confirmOrder} className="w-full" disabled={loading}>
+            <Button onClick={confirmOrder} className="w-full" disabled={loading || !cart.length}>
               {loading ? "Placing Order..." : "Place Order"}
             </Button>
             {isPlaceOpen && <PlaceOrderPage tokenNo={tokenNo} onNewOrder={onNewOrder} />}

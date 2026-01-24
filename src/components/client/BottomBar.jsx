@@ -16,7 +16,7 @@ export default function BottomBar({ grandTotal, restaurantConfig, onViewCart }) 
             rounded-md
             shadow-sm
           "
-        >
+        > View Cart
           <ShoppingCart />
         </Button>
 

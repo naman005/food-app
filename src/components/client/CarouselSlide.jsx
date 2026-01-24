@@ -53,7 +53,7 @@ export default function CarouselSlide({
           onClick={handleAdd}
           className="rounded-full px-4 text-sm"
         >
-          Add
+          Add to Cart
         </Button>
       </div>
       <div className="flex items-center justify-center px-2">

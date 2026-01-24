@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense, lazy } from "react"
 import { useParams } from "react-router-dom"
 import { useRestaurant } from "@/context/RestaurantContext"
 import { Label } from "@/components/ui/label"
@@ -6,10 +6,11 @@ import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import CategoryTabs from "@/components/client/CategoryTabs"
-import ItemCarousel from "@/components/client/ItemCarousel"
+const ItemCarousel = lazy(() => import("@/components/client/ItemCarousel"));
 import BottomBar from "@/components/client/BottomBar"
 import CartPage from "./CartPage"
 import { Spinner } from "@/components/ui/spinner"
+import { ClientSkeleton, ItemSkeleton } from "@/components/client/ClientSkeleton"
 
 export default function ClientHomePage() {
   const { restaurantId } = useParams();
@@ -49,7 +50,7 @@ export default function ClientHomePage() {
     if (loadingMenu || !menu || !restaurantConfig) {
     return (
       <div className="h-screen w-full flex justify-center items-center">
-        <Spinner className="size-6" />
+        <ClientSkeleton />
       </div>
     )
   }
@@ -129,7 +130,7 @@ export default function ClientHomePage() {
   return (
     <div className="h-screen flex flex-col bg-white">
 
-      {bothOrderModesEnabled && isOrderTypeOpen && (
+      {/* {bothOrderModesEnabled && isOrderTypeOpen && (
         <div className="fixed inset-0 bg-white z-30">
           <div className="flex items-center justify-center min-h-screen mx-auto max-w-md gap-8">
           <Button 
@@ -177,7 +178,6 @@ export default function ClientHomePage() {
         </div>
       )}
 
-      {/* Veg / Non-Veg */}
       {restaurantConfig.foodPreferences.showVegNonVeg && (
         <div className="flex justify-center py-4 shrink-0">
           <div className="flex items-center gap-2">
@@ -188,21 +188,22 @@ export default function ClientHomePage() {
             />
           </div>
         </div>
-      )}
-      
+      )} */}
 
       <div className="shrink-0">
         <CategoryTabs categories={menu.categories} selectedCategory={selectedCategory} onSelectCategory={setSelectedCategory} />
       </div>
 
       <div className="flex-1 flex justify-center items-center bg-white">
+      <Suspense fallback={<ItemSkeleton />}>
         <ItemCarousel
           items={menuItems}
           options={menu.options}
           selectedCategory={selectedCategory}
           onAddItem={addToCart}
           restaurantConfig={restaurantConfig}
-        />    
+        />
+        </Suspense>    
       </div>
 
       <div className="h-16 shrink-0" />
