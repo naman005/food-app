@@ -32,7 +32,7 @@ export default function SignUp() {
   const formRef = useRef(null);
   
   useEffect(() => {
-    if (isLoggedIn) navigate("/"); 
+    if (isLoggedIn) navigate("/r/home"); 
   }, [isLoggedIn, navigate]);
 
   useEffect(() => {

@@ -31,7 +31,7 @@ export default function SignIn() {
   const formRef = useRef(null);
 
   useEffect(() => {
-    if (isLoggedIn) navigate("/"); 
+    if (isLoggedIn) navigate("/r/home"); 
   }, [isLoggedIn, navigate]);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function SignIn() {
     e.preventDefault();
     try {
       await loginWithEmailAndPassword(email, password); 
-      navigate("/"); 
+      navigate("/r/home"); 
     } catch (err) {
       setError("Login failed. Please try again");
     }

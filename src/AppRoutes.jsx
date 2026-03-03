@@ -11,6 +11,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import ClientHomePage from "./pages/client/ClientHomePage";
 import { useRestaurant } from "./context/RestaurantContext";
 import ClientRestaurantLoader from "./components/client/ClientRestaurantLoader";
+import LandingPage from "./pages/LandingPage";
 
 const AppRoutes = () => {
   const restaurant = useRestaurant();
@@ -21,13 +22,15 @@ const AppRoutes = () => {
   
   return (
     <ReactRouterRoutes>
+      {/* Landing Page */}
+      <Route path="/" element={<LandingPage />} />
       {/* Auth Routes */}
       <Route path="/r/signup" element={<SignUp />} />
       <Route path="/r/signin" element={<SignIn />} />
       {/* Admin Routes */}
       <Route element={<ProtectedRoute />}>
       <Route path="/r/onboard" element={<MenuSetupPage />} />
-      <Route path="/" element={<Home />} />
+      <Route path="/r/home" element={<Home />} />
       <Route path="/r/menu" element={<RestaurantMenu restaurantId ={restaurantId} />} />
       <Route path="/r/kitchen" element={<KitchenOrdersScreen restaurantId={restaurantId} />} />
       <Route path="/r/token" element={<TokenQueue restaurantId={restaurantId} />} />
